@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conversao-temperatura-deployment
+  labels:
+    app: conversao-temperatura-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: conversao-temperatura
+  template:
+    metadata:
+      labels:
+        app: conversao-temperatura
+    spec:
+      containers:
+        - name: conversao-temperatura
+          image: gabriel2012rissi/conversao-temperatura:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversao-temperatura-service
+  labels:
+    app: conversao-temperatura-service
+spec:
+  type: ClusterIP
+  selector:
+    app: conversao-temperatura
+  ports:
+    - port: 30080
+      targetPort: 8080
